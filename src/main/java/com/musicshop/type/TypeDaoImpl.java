@@ -1,14 +1,34 @@
 package com.musicshop.type;
 
-import org.springframework.stereotype.Repository;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 import com.musicshop.persistence.GenericDaoImpl;
 
 @Repository
-public class TypeDaoImpl extends GenericDaoImpl<Type, Integer> implements TypeDao{
+public class TypeDaoImpl extends GenericDaoImpl<Type, Integer> implements TypeDao {
 
 	public TypeDaoImpl() {
 		super(Type.class);
+	}
+
+	@Override
+	public List<Type> read(Integer familyId) {
+
+		Query q = sessionFactory.getCurrentSession()
+				.createNativeQuery("select t.id, t.name, t.image, t.family_id as familyId, count(i.id) as instrumentCount "
+						+ "from type t " + "left join instrument i on i.type_id=t.id where t.family_id=" + familyId
+						+ " " + "group by t.id, t.name, t.image, t.family_id","TypeMapping");
+		
+		List<Type> types=q.list();
+		return types;
+		
 	}
 
 }

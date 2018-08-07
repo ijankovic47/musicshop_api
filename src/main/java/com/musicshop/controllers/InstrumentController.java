@@ -34,6 +34,7 @@ public class InstrumentController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody InstrumentDto instrument) throws URISyntaxException {
 
+		System.out.println(instrument.getTypeId());
 		Integer id = instrumentService.create(instrument);
 		URI location = ServletUriComponentsBuilder.fromCurrentServletMapping().path("/instrument/{id}").build()
 				.expand(id).toUri();

@@ -31,6 +31,7 @@ public class InstrumentServiceImpl implements InstrumentService {
 	@Override
 	public Integer create(InstrumentDto instrument) {
 
+		System.out.println(instrument.getTypeId());
 		Optional<Type> type = Optional.ofNullable(typeDao.readById(instrument.getTypeId()));
 		Optional<Brand> brand = Optional.ofNullable(brandDao.readById(instrument.getBrandId()));
 

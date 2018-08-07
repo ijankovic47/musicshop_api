@@ -26,8 +26,8 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 	@Override
-	public List<Brand> readAll() {
-		return brandDao.readAll();
+	public List<Brand> read(Integer familyId) {
+		return brandDao.read(familyId);
 	}
 
 	@Override

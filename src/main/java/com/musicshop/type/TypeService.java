@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface TypeService {
 
-	Integer create(Type type);
-	Optional<Type> readById(Integer id);
-	List<Type> readAll();
+	Integer create(TypeDto type);
+	Optional<TypeDto> readById(Integer id);
+	List<TypeDto> read(Integer familyId);
 }

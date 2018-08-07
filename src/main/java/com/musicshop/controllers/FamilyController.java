@@ -3,6 +3,7 @@ package com.musicshop.controllers;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,26 +16,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.musicshop.exceptions.NoSuchEntityException;
-import com.musicshop.type.TypeDto;
-import com.musicshop.type.TypeService;
+import com.musicshop.family.Family;
+import com.musicshop.family.FamilyService;
 
 @RestController
-@RequestMapping("/type")
-public class TypeController {
+@RequestMapping("/family")
+public class FamilyController {
 
-	public TypeService typeService;
-
+	private FamilyService familyService;
+	
 	@Autowired
-	public TypeController(TypeService typeService) {
-
-		this.typeService = typeService;
+	public FamilyController(FamilyService familyService) {
+		this.familyService=familyService;
 	}
-
+	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> create(@RequestBody TypeDto type) throws URISyntaxException {
+	public ResponseEntity<?> create(@RequestBody Family family) throws URISyntaxException {
 
-		Integer id = typeService.create(type);
-		URI location = ServletUriComponentsBuilder.fromCurrentServletMapping().path("/type/{id}").build().expand(id)
+		Integer id = familyService.create(family);
+		URI location = ServletUriComponentsBuilder.fromCurrentServletMapping().path("/family/{id}").build().expand(id)
 				.toUri();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(location);
@@ -42,18 +42,18 @@ public class TypeController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> read(@RequestParam(name = "familyId", required = false) Integer familyId) {
+	public ResponseEntity<?> read(@RequestParam(name="brandId", required=false) Integer brandId) {
 
-		return ResponseEntity.ok(typeService.read(familyId));
+		return ResponseEntity.ok(familyService.read(brandId));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> readById(@PathVariable("id") Integer id) throws NoSuchEntityException {
-
-		Optional<TypeDto> type = typeService.readById(id);
-		if (type.isPresent()) {
-			return ResponseEntity.ok(type.get());
+		
+		Optional<Family> family = familyService.readById(id);
+		if (family.isPresent()) {
+			return ResponseEntity.ok(family.get());
 		}
-		throw new NoSuchEntityException("No type found for id = " + id);
+		throw new NoSuchEntityException("No family found for id = " + id);
 	}
 }

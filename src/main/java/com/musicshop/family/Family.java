@@ -1,4 +1,4 @@
-package com.musicshop.brand;
+package com.musicshop.family;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,13 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Brand {
+public class Family {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private String name;
-	private String image;
 	private Integer instrumentCount;
 	
 	public Integer getId() {
@@ -27,17 +26,10 @@ public class Brand {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getImage() {
-		return image;
-	}
-	public void setImage(String image) {
-		this.image = image;
-	}
 	public Integer getInstrumentCount() {
 		return instrumentCount;
 	}
 	public void setInstrumentCount(Integer instrumentCount) {
 		this.instrumentCount = instrumentCount;
 	}
-	
 }

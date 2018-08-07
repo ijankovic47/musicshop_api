@@ -10,6 +10,8 @@ import javax.persistence.criteria.Root;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.musicshop.type.Type;
+
 public abstract class GenericDaoImpl<T,PK extends Serializable> implements GenericDao<T,PK>{
 
 	@Autowired
