@@ -7,5 +7,5 @@ public interface TypeService {
 
 	Integer create(TypeDto type);
 	Optional<TypeDto> readById(Integer id);
-	List<TypeDto> read(Integer familyId);
+	List<TypeDto> read(Integer familyId, Integer brandId);
 }

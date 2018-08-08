@@ -2,9 +2,7 @@ package com.musicshop.controllers;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,7 +34,6 @@ public class InstrumentController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody InstrumentDto instrument) throws URISyntaxException {
 
-		System.out.println(instrument.getTypeId());
 		Integer id = instrumentService.create(instrument);
 		URI location = ServletUriComponentsBuilder.fromCurrentServletMapping().path("/instrument/{id}").build()
 				.expand(id).toUri();
@@ -46,9 +43,11 @@ public class InstrumentController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> read(@RequestParam Map<String, String> parameters) {
+	public ResponseEntity<?> read(@RequestParam(name="familyId", required=false) Integer familyId,
+			@RequestParam(name="typeId", required=false) Integer typeId, @RequestParam(name="propertyId", required=false) Integer propertyId,
+			@RequestParam(name="brandId", required=false) Integer brandId) {
 
-		return ResponseEntity.ok(instrumentService.read(null, null));
+		return ResponseEntity.ok(instrumentService.read(familyId, typeId, propertyId, brandId));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

@@ -44,14 +44,16 @@ public class BrandController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> read(@RequestParam(name="familyId", required=false)Integer familyId, @RequestParam(name="typeId", required=false)Integer typeId) {
+	public ResponseEntity<?> read(@RequestParam(name = "familyId", required = false) Integer familyId,
+			@RequestParam(name = "typeId", required = false) Integer typeId,
+			@RequestParam(name = "propertyId", required = false) Integer propertyId) {
 
-		return ResponseEntity.ok(brandService.read(familyId, typeId));
+		return ResponseEntity.ok(brandService.read(familyId, typeId, propertyId));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> readById(@PathVariable("id") Integer id) throws NoSuchEntityException {
-		
+
 		Optional<Brand> brand = brandService.readById(id);
 		if (brand.isPresent()) {
 			return ResponseEntity.ok(brand.get());

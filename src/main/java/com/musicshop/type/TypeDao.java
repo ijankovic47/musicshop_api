@@ -6,5 +6,5 @@ import com.musicshop.persistence.GenericDao;
 
 public interface TypeDao extends GenericDao<Type, Integer>{
 
-	List<Type> read(Integer familyId);
+	List<Type> read(Integer familyId, Integer brandId);
 }
