@@ -44,9 +44,9 @@ public class BrandController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> read(@RequestParam(name="familyId", required=false)Integer familyId) {
+	public ResponseEntity<?> read(@RequestParam(name="familyId", required=false)Integer familyId, @RequestParam(name="typeId", required=false)Integer typeId) {
 
-		return ResponseEntity.ok(brandService.read(familyId));
+		return ResponseEntity.ok(brandService.read(familyId, typeId));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

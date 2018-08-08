@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SqlResultSetMapping;
-
 import com.musicshop.family.Family;
 
 @Entity
@@ -31,7 +30,6 @@ public class Type {
 	private String image;
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Family family;
-	
 	private Integer instrumentCount;
 	
 	public Integer getId() {
@@ -64,6 +62,4 @@ public class Type {
 	public void setInstrumentCount(Integer instrumentCount) {
 		this.instrumentCount = instrumentCount;
 	}
-	
-	
 }
