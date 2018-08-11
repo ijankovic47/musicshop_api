@@ -3,7 +3,6 @@ package com.musicshop.type;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
@@ -30,16 +29,16 @@ public class TypeDaoImpl extends GenericDaoImpl<Type, Integer> implements TypeDa
 		Root<Instrument> instrument=subCount.from(Instrument.class);
 		
 		Predicate predicate=builder.conjunction();
+		Predicate subPredicate=builder.conjunction();
 		
 		if(familyId!=null) {
 			predicate=builder.and(predicate, builder.equal(type.get("family").get("id"), familyId));
 		}
 		if(brandId!=null) {
-			Join<Type, Instrument> withInstruments=type.join("instruments");
-			predicate=builder.and(predicate, builder.equal(withInstruments.get("brand").get("id"), brandId));
+			subPredicate=builder.and(predicate, builder.equal(instrument.get("brand").get("id"), brandId));
 		}
-		
-		subCount.select(builder.count(instrument)).where(builder.equal(instrument.get("type").get("id"),type.get("id")));
+		subPredicate=builder.and(subPredicate, builder.equal(instrument.get("type").get("id"),type.get("id")));
+		subCount.select(builder.count(instrument)).where(subPredicate);
 		
 		cq.select(
 			    builder.construct(

@@ -4,14 +4,12 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import org.springframework.stereotype.Repository;
 import com.musicshop.instrument.Instrument;
 import com.musicshop.persistence.GenericDaoImpl;
-import com.musicshop.type.Type;
 
 @Repository
 public class FamilyDaoImpl extends GenericDaoImpl<Family, Integer> implements FamilyDao{
@@ -32,14 +30,12 @@ public class FamilyDaoImpl extends GenericDaoImpl<Family, Integer> implements Fa
 		
 		Root<Instrument> instrument=subCount.from(Instrument.class);
 		Predicate predicate =builder.conjunction();
+		predicate=builder.and(predicate, builder.equal(instrument.get("type").get("family").get("id"),family.get("id")));
 		
 		if(brandId!=null) {
-			Join<Family, Type> withType=family.join("types");
-			Join<Instrument, Type> withInstrument=withType.join("instruments");
-			predicate=builder.and(predicate, builder.equal(withInstrument.get("brand").get("id"), brandId));
+			predicate=builder.and(predicate, builder.equal(instrument.get("brand").get("id"), brandId));
 		}
-		
-		subCount.select(builder.count(instrument)).where(builder.equal(instrument.get("type").get("family").get("id"),family.get("id")));
+		subCount.select(builder.count(instrument)).where(predicate);
 		
 		cq.select(
 			    builder.construct(
@@ -48,7 +44,7 @@ public class FamilyDaoImpl extends GenericDaoImpl<Family, Integer> implements Fa
 			            family.get("name"),
 			            subCount.getSelection()
 			    )
-			).where(predicate, builder.greaterThan(builder.toInteger(subCount.getSelection()), 0));
+			).where(builder.greaterThan(builder.toInteger(subCount.getSelection()), 0));
 			return sessionFactory.getCurrentSession().createQuery(cq).getResultList();
 		
 //		Query q=sessionFactory.getCurrentSession().createNativeQuery("select f.id, f.name, count(i.id) as instrumentcount "
