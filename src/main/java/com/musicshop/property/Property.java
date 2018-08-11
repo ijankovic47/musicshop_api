@@ -11,8 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.SqlResultSetMapping;
-
 import com.musicshop.instrument.Instrument;
 import com.musicshop.type.Type;
 
@@ -28,15 +28,25 @@ entities={
 public class Property {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue (strategy=GenerationType.SEQUENCE, generator="PROPERTY_SEQ")
+	@SequenceGenerator(name="PROPERTY_SEQ", sequenceName="PROPERTY_SEQ", allocationSize=1)
 	private Integer id;
 	private String name;
-	private Integer instrumentCount;
-	@ManyToMany(fetch=FetchType.LAZY, mappedBy="properties")
+	@ManyToMany(fetch=FetchType.EAGER, mappedBy="properties")
 	private List<Instrument> instruments;
 	@ManyToOne(fetch=FetchType.EAGER, targetEntity=Type.class)
 	private Type type;
 	
+	public Property() {
+	}
+	public Property(Integer id, String name, Integer typeId, List<Instrument> instruments) {
+		this.id=id;
+		this.name=name;
+	    Type t=new Type();
+	    t.setId(id);
+	    this.type=t;
+	    this.instruments=instruments;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -48,12 +58,6 @@ public class Property {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public Integer getInstrumentCount() {
-		return instrumentCount;
-	}
-	public void setInstrumentCount(Integer instrumentCount) {
-		this.instrumentCount = instrumentCount;
 	}
 	public List<Instrument> getInstruments() {
 		return instruments;

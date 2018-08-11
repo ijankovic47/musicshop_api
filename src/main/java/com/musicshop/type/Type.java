@@ -1,5 +1,7 @@
 package com.musicshop.type;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EntityResult;
 import javax.persistence.FetchType;
@@ -8,8 +10,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.SqlResultSetMapping;
+import javax.persistence.Transient;
+
 import com.musicshop.family.Family;
+import com.musicshop.instrument.Instrument;
+import com.musicshop.property.Property;
 
 @Entity
 @SqlResultSetMapping(name="TypeMapping",
@@ -24,13 +32,31 @@ import com.musicshop.family.Family;
 public class Type {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue (strategy=GenerationType.SEQUENCE, generator="TYPE_SEQ")
+	@SequenceGenerator(name="TYPE_SEQ", sequenceName="TYPE_SEQ", allocationSize=1)
 	private Integer id;
 	private String name;
 	private String image;
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Family family;
-	private Integer instrumentCount;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="type")
+	private List<Instrument> instruments;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="type")
+	private List<Property> properties;
+	@Transient
+	private Long instrumentCount;
+	
+	public Type() {
+	}
+	public Type(Integer id, String name, String image, Integer familyId, Long instrumentCount) {
+		this.id=id;
+		this.name=name;
+		this.image=image;
+		Family f=new Family();
+		f.setId(familyId);
+		this.family=f;
+		this.instrumentCount=instrumentCount;
+	}
 	
 	public Integer getId() {
 		return id;
@@ -56,10 +82,22 @@ public class Type {
 	public void setFamily(Family family) {
 		this.family = family;
 	}
-	public Integer getInstrumentCount() {
+	public List<Instrument> getInstruments() {
+		return instruments;
+	}
+	public void setInstruments(List<Instrument> instruments) {
+		this.instruments = instruments;
+	}
+	public Long getInstrumentCount() {
 		return instrumentCount;
 	}
-	public void setInstrumentCount(Integer instrumentCount) {
+	public void setInstrumentCount(Long instrumentCount) {
 		this.instrumentCount = instrumentCount;
+	}
+	public List<Property> getProperties() {
+		return properties;
+	}
+	public void setProperties(List<Property> properties) {
+		this.properties = properties;
 	}
 }

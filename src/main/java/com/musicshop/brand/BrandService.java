@@ -6,6 +6,6 @@ import java.util.Optional;
 public interface BrandService {
 
 	Integer create(Brand brand);
-	List<Brand> read(Integer familyId, Integer typeId, Integer propertyId);
+	List<Brand> read(Integer familyId, Integer typeId, Integer propertyId, Integer priceMin, Integer priceMax);
 	Optional<Brand> readById(Integer id);
 }

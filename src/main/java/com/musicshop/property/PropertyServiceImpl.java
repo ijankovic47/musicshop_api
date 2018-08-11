@@ -45,7 +45,7 @@ public class PropertyServiceImpl implements PropertyService{
 		dto.setId(property.getId());
 		dto.setName(property.getName());
 		dto.setTypeId(property.getType().getId());
-		dto.setInstrumentCount(property.getInstrumentCount());
+		dto.setInstrumentCount(property.getInstruments()!=null?(long)property.getInstruments().size():0);
 		
 		return dto;
 	}
