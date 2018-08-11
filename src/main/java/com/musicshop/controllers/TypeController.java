@@ -42,9 +42,12 @@ public class TypeController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> read(@RequestParam("familyId") Integer familyId, @RequestParam(name="brandId", required=false) Integer brandId) {
+	public ResponseEntity<?> read(@RequestParam("familyId") Integer familyId,
+			@RequestParam(name = "brandId", required = false) Integer brandId,
+			@RequestParam(name = "priceMin", required = false) Integer priceMin,
+			@RequestParam(name = "priceMax", required = false) Integer priceMax) {
 
-		return ResponseEntity.ok(typeService.read(familyId, brandId));
+		return ResponseEntity.ok(typeService.read(familyId, brandId, priceMin, priceMax));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

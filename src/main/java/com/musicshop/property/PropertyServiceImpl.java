@@ -24,9 +24,9 @@ public class PropertyServiceImpl implements PropertyService{
 	}
 	
 	@Override
-	public List<PropertyDto> read(Integer typeId, Integer brandId) {
+	public List<PropertyDto> read(Integer typeId, Integer brandId, Integer priceMin, Integer priceMax) {
 		
-		return propertyDao.read(typeId, brandId).stream().map(property->convertJpeToDto(property)).collect(Collectors.toList());
+		return propertyDao.read(typeId, brandId, priceMin, priceMax).stream().map(property->convertJpeToDto(property)).collect(Collectors.toList());
 	}
 	
 	@Override
@@ -45,7 +45,7 @@ public class PropertyServiceImpl implements PropertyService{
 		dto.setId(property.getId());
 		dto.setName(property.getName());
 		dto.setTypeId(property.getType().getId());
-		dto.setInstrumentCount(property.getInstruments()!=null?(long)property.getInstruments().size():0);
+		dto.setInstrumentCount(property.getInstrumentCount());
 		
 		return dto;
 	}

@@ -20,12 +20,12 @@ import com.musicshop.property.PropertyService;
 public class PropertyConroller {
 
 	private PropertyService propeprtyService;
-	
+
 	@Autowired
 	public PropertyConroller(PropertyService propeprtyService) {
-		this.propeprtyService=propeprtyService;
+		this.propeprtyService = propeprtyService;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody PropertyDto property) throws URISyntaxException {
 
@@ -36,10 +36,13 @@ public class PropertyConroller {
 		headers.setLocation(location);
 		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 	}
-	
+
 	@RequestMapping()
-	public ResponseEntity<?> read(@RequestParam("typeId") Integer typeId, @RequestParam(name="brandId", required=false) Integer brandId){
-		
-		return ResponseEntity.ok(propeprtyService.read(typeId, brandId));
+	public ResponseEntity<?> read(@RequestParam("typeId") Integer typeId,
+			@RequestParam(name = "brandId", required = false) Integer brandId,
+			@RequestParam(name = "priceMin", required = false) Integer priceMin,
+			@RequestParam(name = "priceMax", required = false) Integer priceMax) {
+
+		return ResponseEntity.ok(propeprtyService.read(typeId, brandId, priceMin, priceMax));
 	}
 }

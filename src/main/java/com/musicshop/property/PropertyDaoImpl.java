@@ -12,7 +12,7 @@ public class PropertyDaoImpl extends GenericDaoImpl<Property, Integer> implement
 		super(Property.class);
 	}
 
-	public List<Property> read(Integer typeId, Integer brandId) {
+	public List<Property> read(Integer typeId, Integer brandId, Integer priceMin, Integer priceMax) {
 
 //		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 //		CriteriaQuery<Property> cq = builder.createQuery(Property.class);
@@ -42,6 +42,8 @@ public class PropertyDaoImpl extends GenericDaoImpl<Property, Integer> implement
 				+ "inner join instrument i on i.id=ip.instrument_id "
 				+ "where p.type_id="+typeId
 		        + (brandId==null?"":" and i.brand_id="+brandId)
+		        + (priceMin==null?"":" and i.price>="+priceMin)
+		        + (priceMax==null?"":" and i.price<"+priceMax)
 		        + " group by p.id, p.name, p.type_id", "PropertyMapping");
 		
 		List<Property> properties=q.list();

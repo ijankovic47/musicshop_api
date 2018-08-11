@@ -24,12 +24,12 @@ import com.musicshop.family.FamilyService;
 public class FamilyController {
 
 	private FamilyService familyService;
-	
+
 	@Autowired
 	public FamilyController(FamilyService familyService) {
-		this.familyService=familyService;
+		this.familyService = familyService;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody Family family) throws URISyntaxException {
 
@@ -42,14 +42,16 @@ public class FamilyController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> read(@RequestParam(name="brandId", required=false) Integer brandId) {
+	public ResponseEntity<?> read(@RequestParam(name = "brandId", required = false) Integer brandId,
+			@RequestParam(name = "priceMin", required = false) Integer priceMin,
+			@RequestParam(name = "priceMax", required = false) Integer priceMax) {
 
-		return ResponseEntity.ok(familyService.read(brandId));
+		return ResponseEntity.ok(familyService.read(brandId, priceMin, priceMax));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> readById(@PathVariable("id") Integer id) throws NoSuchEntityException {
-		
+
 		Optional<Family> family = familyService.readById(id);
 		if (family.isPresent()) {
 			return ResponseEntity.ok(family.get());

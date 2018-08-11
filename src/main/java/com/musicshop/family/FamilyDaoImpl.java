@@ -19,7 +19,7 @@ public class FamilyDaoImpl extends GenericDaoImpl<Family, Integer> implements Fa
 	}
 
 	@Override
-	public List<Family> read(Integer brandId) {
+	public List<Family> read(Integer brandId, Integer priceMin, Integer priceMax) {
 		
 		CriteriaBuilder builder=sessionFactory.getCurrentSession().getCriteriaBuilder();
 		CriteriaQuery<Family> cq=builder.createQuery(Family.class);
@@ -34,6 +34,12 @@ public class FamilyDaoImpl extends GenericDaoImpl<Family, Integer> implements Fa
 		
 		if(brandId!=null) {
 			predicate=builder.and(predicate, builder.equal(instrument.get("brand").get("id"), brandId));
+		}
+		if(priceMin!=null) {
+			predicate=builder.and(predicate, builder.greaterThanOrEqualTo(instrument.get("price"), priceMin));
+		}
+		if(priceMax!=null) {
+			predicate=builder.and(predicate, builder.lessThan(instrument.get("price"), priceMax));
 		}
 		subCount.select(builder.count(instrument)).where(predicate);
 		

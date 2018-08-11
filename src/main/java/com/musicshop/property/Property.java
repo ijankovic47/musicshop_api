@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.SqlResultSetMapping;
+import javax.persistence.Transient;
+
 import com.musicshop.instrument.Instrument;
 import com.musicshop.type.Type;
 
@@ -32,21 +34,11 @@ public class Property {
 	@SequenceGenerator(name="PROPERTY_SEQ", sequenceName="PROPERTY_SEQ", allocationSize=1)
 	private Integer id;
 	private String name;
-	@ManyToMany(fetch=FetchType.EAGER, mappedBy="properties")
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="properties")
 	private List<Instrument> instruments;
 	@ManyToOne(fetch=FetchType.EAGER, targetEntity=Type.class)
 	private Type type;
-	
-	public Property() {
-	}
-	public Property(Integer id, String name, Integer typeId, List<Instrument> instruments) {
-		this.id=id;
-		this.name=name;
-	    Type t=new Type();
-	    t.setId(id);
-	    this.type=t;
-	    this.instruments=instruments;
-	}
+	private Long instrumentCount;
 	public Integer getId() {
 		return id;
 	}
@@ -71,4 +63,11 @@ public class Property {
 	public void setType(Type type) {
 		this.type = type;
 	}
+	public Long getInstrumentCount() {
+		return instrumentCount;
+	}
+	public void setInstrumentCount(Long instrumentCount) {
+		this.instrumentCount = instrumentCount;
+	}
+	
 }
