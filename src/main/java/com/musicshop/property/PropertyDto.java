@@ -4,7 +4,7 @@ public class PropertyDto {
 
 	private Integer id;
 	private String name;
-	private Integer instrumentCount;
+	private Long instrumentCount;
 	private Integer typeId;
 	
 	public Integer getId() {
@@ -19,17 +19,17 @@ public class PropertyDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getInstrumentCount() {
-		return instrumentCount;
-	}
-	public void setInstrumentCount(Integer instrumentCount) {
-		this.instrumentCount = instrumentCount;
-	}
 	public Integer getTypeId() {
 		return typeId;
 	}
 	public void setTypeId(Integer typeId) {
 		this.typeId = typeId;
+	}
+	public Long getInstrumentCount() {
+		return instrumentCount;
+	}
+	public void setInstrumentCount(Long instrumentCount) {
+		this.instrumentCount = instrumentCount;
 	}
 	
 }

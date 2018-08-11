@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.musicshop.brand.Brand;
 import com.musicshop.property.Property;
@@ -21,7 +22,8 @@ import com.musicshop.type.Type;
 public class Instrument {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue (strategy=GenerationType.SEQUENCE, generator="INSTRUMENT_SEQ")
+	@SequenceGenerator(name="INSTRUMENT_SEQ", sequenceName="INSTRUMENT_SEQ", allocationSize=1)
 	private Integer id;
 	private String name;
 	private String description;

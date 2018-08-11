@@ -43,11 +43,27 @@ public class InstrumentController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> read(@RequestParam(name="familyId", required=false) Integer familyId,
-			@RequestParam(name="typeId", required=false) Integer typeId, @RequestParam(name="propertyId", required=false) Integer propertyId,
-			@RequestParam(name="brandId", required=false) Integer brandId) {
+	public ResponseEntity<?> read(@RequestParam(name = "familyId", required = false) Integer familyId,
+			@RequestParam(name = "typeId", required = false) Integer typeId,
+			@RequestParam(name = "propertyId", required = false) Integer propertyId,
+			@RequestParam(name = "brandId", required = false) Integer brandId,
+			@RequestParam("pageSize") Integer pageSize, @RequestParam("pageNumber") Integer pageNumber,
+			@RequestParam(name = "priceMin", required = false) Integer priceMin,
+			@RequestParam(name = "priceMax", required = false) Integer priceMax) {
 
-		return ResponseEntity.ok(instrumentService.read(familyId, typeId, propertyId, brandId));
+		return ResponseEntity.ok(instrumentService.read(familyId, typeId, propertyId, brandId, pageSize, pageNumber,
+				priceMin, priceMax));
+	}
+
+	@RequestMapping(value = "/count", method = RequestMethod.GET)
+	public ResponseEntity<?> count(@RequestParam(name = "familyId", required = false) Integer familyId,
+			@RequestParam(name = "typeId", required = false) Integer typeId,
+			@RequestParam(name = "propertyId", required = false) Integer propertyId,
+			@RequestParam(name = "brandId", required = false) Integer brandId,
+			@RequestParam(name = "priceMin", required = false) Integer priceMin,
+			@RequestParam(name = "priceMax", required = false) Integer priceMax) {
+
+		return ResponseEntity.ok(instrumentService.prices(familyId, typeId, propertyId, brandId, priceMin, priceMax));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

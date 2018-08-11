@@ -46,9 +46,11 @@ public class BrandController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> read(@RequestParam(name = "familyId", required = false) Integer familyId,
 			@RequestParam(name = "typeId", required = false) Integer typeId,
-			@RequestParam(name = "propertyId", required = false) Integer propertyId) {
+			@RequestParam(name = "propertyId", required = false) Integer propertyId,
+			@RequestParam(name = "priceMin", required = false) Integer priceMin,
+			@RequestParam(name = "priceMax", required = false) Integer priceMax) {
 
-		return ResponseEntity.ok(brandService.read(familyId, typeId, propertyId));
+		return ResponseEntity.ok(brandService.read(familyId, typeId, propertyId, priceMin, priceMax));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
