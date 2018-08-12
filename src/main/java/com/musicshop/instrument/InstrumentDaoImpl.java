@@ -7,6 +7,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.musicshop.brand.Brand;
@@ -52,8 +53,14 @@ public class InstrumentDaoImpl extends GenericDaoImpl<Instrument, Integer> imple
 			predicate = builder.and(predicate, builder.lessThan(root.get("price"), priceMax));
 		}
 		criteria.select(root).where(predicate);
-		return sessionFactory.getCurrentSession().createQuery(criteria).setFirstResult((pageNumber - 1) * pageSize)
-				.setMaxResults(pageSize).getResultList();
+		Session s = sessionFactory.getCurrentSession();
+		if (pageSize != null) {
+			return s.createQuery(criteria).setFirstResult(pageNumber != null ? (pageNumber - 1) * pageSize : 0)
+					.setMaxResults(pageSize).getResultList();
+		} else {
+			return s.createQuery(criteria).getResultList();
+		}
+
 	}
 
 	@Override
@@ -90,6 +97,20 @@ public class InstrumentDaoImpl extends GenericDaoImpl<Instrument, Integer> imple
 			predicate = builder.and(predicate, builder.lessThan(root.get("price"), priceMax));
 		}
 		criteria.select(root.get("price")).where(predicate);
+		return sessionFactory.getCurrentSession().createQuery(criteria).getResultList();
+	}
+
+	@Override
+	public List<Instrument> readByIds(List<Integer> ids) {
+		
+		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<Instrument> criteria = builder.createQuery(type);
+		Root<Instrument> instrument = criteria.from(type);
+		Predicate predicate = builder.conjunction();
+		
+		predicate=builder.and(predicate, instrument.get("id").in(ids));
+		
+		criteria.select(instrument).where(predicate);
 		return sessionFactory.getCurrentSession().createQuery(criteria).getResultList();
 	}
 

@@ -89,4 +89,10 @@ public class InstrumentServiceImpl implements InstrumentService {
 
 		return i;
 	}
+
+	@Override
+	public List<InstrumentDto> readByIds(List<Integer> ids) {
+		return instrumentDao.readByIds(ids).stream().map(instrument -> convertJpeToDto(instrument))
+				.collect(Collectors.toList());
+	}
 }

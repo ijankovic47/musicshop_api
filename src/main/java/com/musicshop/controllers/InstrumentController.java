@@ -2,6 +2,7 @@ package com.musicshop.controllers;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -47,10 +48,15 @@ public class InstrumentController {
 			@RequestParam(name = "typeId", required = false) Integer typeId,
 			@RequestParam(name = "propertyId", required = false) Integer propertyId,
 			@RequestParam(name = "brandId", required = false) Integer brandId,
-			@RequestParam("pageSize") Integer pageSize, @RequestParam("pageNumber") Integer pageNumber,
+			@RequestParam(name = "pageSize", required = false) Integer pageSize,
+			@RequestParam(name = "pageNumber", required = false) Integer pageNumber,
 			@RequestParam(name = "priceMin", required = false) Integer priceMin,
-			@RequestParam(name = "priceMax", required = false) Integer priceMax) {
+			@RequestParam(name = "priceMax", required = false) Integer priceMax,
+			@RequestParam(name = "ids", required = false) List<Integer> ids) {
 
+		if (ids!=null&&!ids.isEmpty()) {
+			return ResponseEntity.ok(instrumentService.readByIds(ids));
+		}
 		return ResponseEntity.ok(instrumentService.read(familyId, typeId, propertyId, brandId, pageSize, pageNumber,
 				priceMin, priceMax));
 	}

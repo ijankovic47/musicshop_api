@@ -9,4 +9,5 @@ public interface InstrumentService {
 	List<InstrumentDto> read(Integer familyId, Integer typeId, Integer propertyId, Integer brandId, Integer pageSize, Integer pageNumber, Integer priceMin, Integer priceMax);
 	Optional<InstrumentDto> readById(Integer id);
 	List<Double> prices(Integer familyId, Integer typeId, Integer propertyId, Integer brandId, Integer priceMin, Integer priceMax);
+	List<InstrumentDto> readByIds(List<Integer> ids);
 }
