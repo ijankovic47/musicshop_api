@@ -13,8 +13,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.SqlResultSetMapping;
-import javax.persistence.Transient;
-
 import com.musicshop.instrument.Instrument;
 import com.musicshop.type.Type;
 

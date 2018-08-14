@@ -12,6 +12,7 @@ public class InstrumentDto {
 	private List<String> images;
 	private String video;
 	private double price;
+	private List<Integer> properties;
 	
 	public Integer getId() {
 		return id;
@@ -60,5 +61,11 @@ public class InstrumentDto {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public List<Integer> getProperties() {
+		return properties;
+	}
+	public void setProperties(List<Integer> properties) {
+		this.properties = properties;
 	}
 }

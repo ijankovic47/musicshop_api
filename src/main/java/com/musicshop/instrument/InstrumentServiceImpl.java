@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.musicshop.brand.Brand;
 import com.musicshop.brand.BrandDao;
+import com.musicshop.property.Property;
+import com.musicshop.property.PropertyDao;
 import com.musicshop.type.Type;
 import com.musicshop.type.TypeDao;
 
@@ -20,24 +22,27 @@ public class InstrumentServiceImpl implements InstrumentService {
 	private InstrumentDao instrumentDao;
 	private TypeDao typeDao;
 	private BrandDao brandDao;
+	private PropertyDao propertyDao;
 
 	@Autowired
-	public InstrumentServiceImpl(InstrumentDao instrumentDao, TypeDao typeDao, BrandDao brandDao) {
+	public InstrumentServiceImpl(InstrumentDao instrumentDao, TypeDao typeDao, BrandDao brandDao, PropertyDao propertyDao) {
 		this.instrumentDao = instrumentDao;
 		this.typeDao = typeDao;
 		this.brandDao = brandDao;
+		this.propertyDao=propertyDao;
 	}
 
 	@Override
 	public Integer create(InstrumentDto instrument) {
 
-		System.out.println(instrument.getTypeId());
 		Optional<Type> type = Optional.ofNullable(typeDao.readById(instrument.getTypeId()));
 		Optional<Brand> brand = Optional.ofNullable(brandDao.readById(instrument.getBrandId()));
-
+		List<Property> properties=propertyDao.readByIds(instrument.getProperties());
+	
 		Instrument i = convertDtoToJpe(instrument);
 		i.setBrand(brand.get());
 		i.setType(type.get());
+		i.setProperties(properties);
 
 		return instrumentDao.create(i);
 	}

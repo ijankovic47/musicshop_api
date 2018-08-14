@@ -3,7 +3,6 @@ package com.musicshop.configuration;
 import java.util.Properties;
 
 import javax.sql.DataSource;
-
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,13 +11,15 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableTransactionManagement
 @EnableWebMvc
 @ComponentScan("com.musicshop")
-public class RootContextConfiguration {
+public class RootContextConfiguration implements WebMvcConfigurer{
 
 	@Bean(name = "dataSource")
 	public DataSource getDataSource() {
@@ -53,5 +54,11 @@ public class RootContextConfiguration {
 	public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
 		HibernateTransactionManager txManager = new HibernateTransactionManager(sessionFactory);
 		return txManager;
+	}
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		// TODO Auto-generated method stub
+		registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE","PATCH").allowedOrigins("*")
+        .allowedHeaders("*");
 	}
 }

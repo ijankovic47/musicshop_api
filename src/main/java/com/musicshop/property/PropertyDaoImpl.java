@@ -1,6 +1,13 @@
 package com.musicshop.property;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import com.musicshop.persistence.GenericDaoImpl;
@@ -48,5 +55,24 @@ public class PropertyDaoImpl extends GenericDaoImpl<Property, Integer> implement
 		
 		List<Property> properties=q.list();
 		return properties;
+	}
+
+	@Override
+	public List<Property> readByIds(List<Integer> ids) {
+		
+		if(ids==null||ids.isEmpty()) {
+			return new ArrayList<>();
+		}
+		CriteriaBuilder cb=sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<Property> cq=cb.createQuery(Property.class);
+		
+		Root<Property> property=cq.from(Property.class);
+		
+		Predicate predicate = cb.conjunction();
+		
+		predicate=cb.and(predicate, property.get("id").in(ids));
+		
+		cq.select(property).where(predicate);
+		return sessionFactory.getCurrentSession().createQuery(cq).getResultList();
 	}
 }
