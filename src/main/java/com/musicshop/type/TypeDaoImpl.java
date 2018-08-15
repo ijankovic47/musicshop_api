@@ -18,7 +18,7 @@ public class TypeDaoImpl extends GenericDaoImpl<Type, Integer> implements TypeDa
 	}
 
 	@Override
-	public List<Type> read(Integer familyId, Integer brandId, Integer priceMin, Integer priceMax) {
+	public List<Type> read(Integer familyId, Integer brandId, Integer priceMin, Integer priceMax, boolean havingInstruments) {
 
 		
 		CriteriaBuilder builder=sessionFactory.getCurrentSession().getCriteriaBuilder();
@@ -55,7 +55,7 @@ public class TypeDaoImpl extends GenericDaoImpl<Type, Integer> implements TypeDa
 			            type.get("family").get("id"),
 			            subCount.getSelection()
 			    )
-			).where(predicate, builder.greaterThan(builder.toInteger(subCount.getSelection()), 0));
+			).where(predicate, havingInstruments?builder.greaterThan(builder.toInteger(subCount.getSelection()), 0):builder.conjunction());
 			return sessionFactory.getCurrentSession().createQuery(cq).getResultList();
 		
 		

@@ -42,9 +42,9 @@ public class TypeServiceImpl implements TypeService {
 	}
 
 	@Override
-	public List<TypeDto> read(Integer familyId, Integer brandId, Integer priceMin, Integer priceMax) {
+	public List<TypeDto> read(Integer familyId, Integer brandId, Integer priceMin, Integer priceMax, boolean havingInstruments) {
 
-		return typeDao.read(familyId, brandId, priceMin, priceMax).stream().map(type->convertJpeToDto(type)).collect(Collectors.toList());
+		return typeDao.read(familyId, brandId, priceMin, priceMax, havingInstruments).stream().map(type->convertJpeToDto(type)).collect(Collectors.toList());
 	}
 
 	private TypeDto convertJpeToDto(Type type) {

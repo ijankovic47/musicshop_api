@@ -19,7 +19,7 @@ public class PropertyDaoImpl extends GenericDaoImpl<Property, Integer> implement
 		super(Property.class);
 	}
 
-	public List<Property> read(Integer typeId, Integer brandId, Integer priceMin, Integer priceMax) {
+	public List<Property> read(Integer typeId, Integer brandId, Integer priceMin, Integer priceMax, boolean havingInstruments) {
 
 //		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 //		CriteriaQuery<Property> cq = builder.createQuery(Property.class);
@@ -45,8 +45,8 @@ public class PropertyDaoImpl extends GenericDaoImpl<Property, Integer> implement
 //		return sessionFactory.getCurrentSession().createQuery(cq).getResultList();
 
 		Query q=sessionFactory.getCurrentSession().createNativeQuery("select p.id, p.name, p.type_id as typeId, count(i.id) as instrumentCount from property p "
-				+ "inner join instrument_property ip on ip.property_id=p.id "
-				+ "inner join instrument i on i.id=ip.instrument_id "
+				+ (havingInstruments?"inner ":"left ")+"join instrument_property ip on ip.property_id=p.id "
+				+ (havingInstruments?"inner ":"left ")+"join instrument i on i.id=ip.instrument_id "
 				+ "where p.type_id="+typeId
 		        + (brandId==null?"":" and i.brand_id="+brandId)
 		        + (priceMin==null?"":" and i.price>="+priceMin)
