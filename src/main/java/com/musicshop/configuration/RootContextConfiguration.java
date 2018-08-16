@@ -34,8 +34,8 @@ public class RootContextConfiguration implements WebMvcConfigurer{
 		dataSource.setDriverClassName(environment.getProperty("oracle.jdbc.OracleDriver"));
 		String dbUsername = environment.getProperty("database.username");
 		String dbPassword = environment.getProperty("database.password");
-		String dbHost = environment.getProperty("database.host");;
-		String dbPort = environment.getProperty("database.port");;
+		String dbHost = environment.getProperty("database.host");
+		String dbPort = environment.getProperty("database.port");
 		dataSource.setUrl("jdbc:oracle:thin:" + dbUsername + "/" + dbPassword + "@" + dbHost + ":" + dbPort + ":orcl");
 		return dataSource;
 	}
