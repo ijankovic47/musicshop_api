@@ -18,7 +18,7 @@ public class TypeDaoImpl extends GenericDaoImpl<Type, Integer> implements TypeDa
 	}
 
 	@Override
-	public List<Type> read(Integer familyId, Integer brandId, Integer priceMin, Integer priceMax, boolean havingInstruments) {
+	public List<Type> read(Integer familyId, Integer brandId, Double priceMin, Double priceMax, boolean havingInstruments) {
 
 		
 		CriteriaBuilder builder=sessionFactory.getCurrentSession().getCriteriaBuilder();

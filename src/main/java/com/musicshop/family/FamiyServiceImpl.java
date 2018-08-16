@@ -20,7 +20,7 @@ public class FamiyServiceImpl implements FamilyService {
 	}
 
 	@Override
-	public List<Family> read(Integer brandId, Integer priceMin, Integer priceMax, boolean havingInstruments) {
+	public List<Family> read(Integer brandId, Double priceMin, Double priceMax, boolean havingInstruments) {
 		
 		return familyDao.read(brandId, priceMin, priceMax, havingInstruments);
 	}

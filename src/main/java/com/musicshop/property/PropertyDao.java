@@ -6,6 +6,6 @@ import com.musicshop.persistence.GenericDao;
 
 public interface PropertyDao extends GenericDao<Property, Integer>{
 
-	List<Property> read(Integer typeId, Integer brandId, Integer priceMin, Integer priceMax, boolean havingInstruments);
+	List<Property> read(Integer typeId, Integer brandId, Double priceMin, Double priceMax, boolean havingInstruments);
 	List<Property> readByIds(List<Integer> ids);
 }

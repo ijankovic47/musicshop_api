@@ -4,9 +4,12 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
@@ -19,23 +22,27 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableTransactionManagement
 @EnableWebMvc
 @ComponentScan("com.musicshop")
+@PropertySource({ "classpath:connections.properties" })
 public class RootContextConfiguration implements WebMvcConfigurer{
 
+	@Autowired
+	private Environment environment;
+	
 	@Bean(name = "dataSource")
-	public DataSource getDataSource() {
+	public DataSource getOracleDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("oracle.jdbc.OracleDriver");
-		String dbUsername = "ms";
-		String dbPassword = "ms";
-		String dbHost = "192.168.1.12";
-		String dbPort = "1521";
+		dataSource.setDriverClassName(environment.getProperty("oracle.jdbc.OracleDriver"));
+		String dbUsername = environment.getProperty("database.username");
+		String dbPassword = environment.getProperty("database.password");
+		String dbHost = environment.getProperty("database.host");;
+		String dbPort = environment.getProperty("database.port");;
 		dataSource.setUrl("jdbc:oracle:thin:" + dbUsername + "/" + dbPassword + "@" + dbHost + ":" + dbPort + ":orcl");
 		return dataSource;
 	}
 
 	@Bean(name = "sessionFactory")
-	public SessionFactory getSessionFactory(DataSource dataSource) {
-		LocalSessionFactoryBuilder sessionFactory = new LocalSessionFactoryBuilder(dataSource);
+	public SessionFactory getSessionFactory() {
+		LocalSessionFactoryBuilder sessionFactory = new LocalSessionFactoryBuilder(getOracleDataSource());
 		sessionFactory.scanPackages("com.musicshop");
 		sessionFactory.addProperties(getHibernateProperties());
 		SessionFactory sf = sessionFactory.buildSessionFactory();
@@ -57,7 +64,6 @@ public class RootContextConfiguration implements WebMvcConfigurer{
 	}
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		// TODO Auto-generated method stub
 		registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE","PATCH").allowedOrigins("*")
         .allowedHeaders("*");
 	}

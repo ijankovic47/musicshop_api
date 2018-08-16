@@ -19,7 +19,7 @@ public class PropertyDaoImpl extends GenericDaoImpl<Property, Integer> implement
 		super(Property.class);
 	}
 
-	public List<Property> read(Integer typeId, Integer brandId, Integer priceMin, Integer priceMax, boolean havingInstruments) {
+	public List<Property> read(Integer typeId, Integer brandId, Double priceMin, Double priceMax, boolean havingInstruments) {
 
 //		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 //		CriteriaQuery<Property> cq = builder.createQuery(Property.class);

@@ -43,8 +43,8 @@ public class FamilyController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> read(@RequestParam(name = "brandId", required = false) Integer brandId,
-			@RequestParam(name = "priceMin", required = false) Integer priceMin,
-			@RequestParam(name = "priceMax", required = false) Integer priceMax,
+			@RequestParam(name = "priceMin", required = false) Double priceMin,
+			@RequestParam(name = "priceMax", required = false) Double priceMax,
 			@RequestParam(name = "havingInstruments", defaultValue = "false") boolean havingInstruments) {
 
 		return ResponseEntity.ok(familyService.read(brandId, priceMin, priceMax, havingInstruments));

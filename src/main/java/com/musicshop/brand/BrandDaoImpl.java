@@ -23,7 +23,7 @@ public class BrandDaoImpl extends GenericDaoImpl<Brand, Integer> implements Bran
 	}
 
 	@Override
-	public List<Brand> read(Integer familyId, Integer typeId, Integer propertyId, Integer priceMin, Integer priceMax,
+	public List<Brand> read(Integer familyId, Integer typeId, Integer propertyId, Double priceMin, Double priceMax,
 			boolean havingInstruments) {
 
 		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();

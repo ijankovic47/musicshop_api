@@ -48,9 +48,9 @@ public class InstrumentServiceImpl implements InstrumentService {
 	}
 
 	@Override
-	public List<InstrumentDto> read(Integer familyId, Integer typeId, Integer propertyId, Integer brandId, Integer pageSize, Integer pageNumber, Integer priceMin, Integer priceMax) {
+	public List<InstrumentDto> read(Integer familyId, Integer typeId, Integer propertyId, Integer brandId, Integer pageSize, Integer pageNumber, Double priceMin, Double priceMax) {
 
-		return instrumentDao.read(familyId,typeId, propertyId, brandId, pageSize, pageNumber, priceMin, priceMax).stream().map(instrument -> convertJpeToDto(instrument))
+		return instrumentDao.readInstruments(familyId,typeId, propertyId, brandId, pageSize, pageNumber, priceMin, priceMax).stream().map(instrument -> convertJpeToDto(instrument))
 				.collect(Collectors.toList());
 	}
 
@@ -60,7 +60,7 @@ public class InstrumentServiceImpl implements InstrumentService {
 		return Optional.ofNullable(convertJpeToDto(instrumentDao.readById(id)));
 	}
 	@Override
-	public List<Double> prices(Integer familyId, Integer typeId, Integer propertyId, Integer brandId, Integer priceMin, Integer priceMax) {
+	public List<Double> prices(Integer familyId, Integer typeId, Integer propertyId, Integer brandId, Double priceMin, Double priceMax) {
 		return instrumentDao.prices(familyId, typeId, propertyId, brandId, priceMin, priceMax);
 	}
 

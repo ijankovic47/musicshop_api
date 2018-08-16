@@ -47,8 +47,8 @@ public class BrandController {
 	public ResponseEntity<?> read(@RequestParam(name = "familyId", required = false) Integer familyId,
 			@RequestParam(name = "typeId", required = false) Integer typeId,
 			@RequestParam(name = "propertyId", required = false) Integer propertyId,
-			@RequestParam(name = "priceMin", required = false) Integer priceMin,
-			@RequestParam(name = "priceMax", required = false) Integer priceMax,
+			@RequestParam(name = "priceMin", required = false) Double priceMin,
+			@RequestParam(name = "priceMax", required = false) Double priceMax,
 			@RequestParam(name = "havingInstruments", defaultValue="false") boolean havingInstruments) {
 
 		return ResponseEntity.ok(brandService.read(familyId, typeId, propertyId, priceMin, priceMax, havingInstruments));

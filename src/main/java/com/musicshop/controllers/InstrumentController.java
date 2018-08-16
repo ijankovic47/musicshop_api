@@ -50,8 +50,8 @@ public class InstrumentController {
 			@RequestParam(name = "brandId", required = false) Integer brandId,
 			@RequestParam(name = "pageSize", required = false) Integer pageSize,
 			@RequestParam(name = "pageNumber", required = false) Integer pageNumber,
-			@RequestParam(name = "priceMin", required = false) Integer priceMin,
-			@RequestParam(name = "priceMax", required = false) Integer priceMax,
+			@RequestParam(name = "priceMin", required = false) Double priceMin,
+			@RequestParam(name = "priceMax", required = false) Double priceMax,
 			@RequestParam(name = "ids", required = false) List<Integer> ids) {
 
 		if (ids!=null&&!ids.isEmpty()) {
@@ -66,8 +66,8 @@ public class InstrumentController {
 			@RequestParam(name = "typeId", required = false) Integer typeId,
 			@RequestParam(name = "propertyId", required = false) Integer propertyId,
 			@RequestParam(name = "brandId", required = false) Integer brandId,
-			@RequestParam(name = "priceMin", required = false) Integer priceMin,
-			@RequestParam(name = "priceMax", required = false) Integer priceMax) {
+			@RequestParam(name = "priceMin", required = false) Double priceMin,
+			@RequestParam(name = "priceMax", required = false) Double priceMax) {
 
 		return ResponseEntity.ok(instrumentService.prices(familyId, typeId, propertyId, brandId, priceMin, priceMax));
 	}

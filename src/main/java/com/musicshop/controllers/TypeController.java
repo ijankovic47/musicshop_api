@@ -44,8 +44,8 @@ public class TypeController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> read(@RequestParam("familyId") Integer familyId,
 			@RequestParam(name = "brandId", required = false) Integer brandId,
-			@RequestParam(name = "priceMin", required = false) Integer priceMin,
-			@RequestParam(name = "priceMax", required = false) Integer priceMax,
+			@RequestParam(name = "priceMin", required = false) Double priceMin,
+			@RequestParam(name = "priceMax", required = false) Double priceMax,
 			@RequestParam(name = "havingInstruments", defaultValue = "false") boolean havingInstruments) {
 
 		return ResponseEntity.ok(typeService.read(familyId, brandId, priceMin, priceMax, havingInstruments));

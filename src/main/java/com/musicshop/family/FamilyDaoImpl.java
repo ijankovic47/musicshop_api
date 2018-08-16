@@ -17,10 +17,8 @@ public class FamilyDaoImpl extends GenericDaoImpl<Family, Integer> implements Fa
 	public FamilyDaoImpl() {
 		super(Family.class);
 	}
-
 	@Override
-	public List<Family> read(Integer brandId, Integer priceMin, Integer priceMax, boolean havingInstruments) {
-		
+	public List<Family> read(Integer brandId, Double priceMin, Double priceMax, boolean havingInstruments) {
 		CriteriaBuilder builder=sessionFactory.getCurrentSession().getCriteriaBuilder();
 		CriteriaQuery<Family> cq=builder.createQuery(Family.class);
 		
