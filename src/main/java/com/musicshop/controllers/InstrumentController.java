@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.musicshop.exceptions.NoSuchEntityException;
 import com.musicshop.instrument.InstrumentDto;
 import com.musicshop.instrument.InstrumentService;
+import com.musicshop.instrument.InstrumentSort;
 
 @RestController
 @RequestMapping("/instrument")
@@ -52,13 +53,15 @@ public class InstrumentController {
 			@RequestParam(name = "pageNumber", required = false) Integer pageNumber,
 			@RequestParam(name = "priceMin", required = false) Double priceMin,
 			@RequestParam(name = "priceMax", required = false) Double priceMax,
-			@RequestParam(name = "ids", required = false) List<Integer> ids) {
+			@RequestParam(name = "ids", required = false) List<Integer> ids,
+			@RequestParam(name = "sort", required = false) InstrumentSort sort) {
 
 		if (ids!=null&&!ids.isEmpty()) {
 			return ResponseEntity.ok(instrumentService.readByIds(ids));
 		}
+		System.out.println(sort!=null?sort.name():null);
 		return ResponseEntity.ok(instrumentService.read(familyId, typeId, propertyId, brandId, pageSize, pageNumber,
-				priceMin, priceMax));
+				priceMin, priceMax, sort));
 	}
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)

@@ -48,9 +48,9 @@ public class InstrumentServiceImpl implements InstrumentService {
 	}
 
 	@Override
-	public List<InstrumentDto> read(Integer familyId, Integer typeId, Integer propertyId, Integer brandId, Integer pageSize, Integer pageNumber, Double priceMin, Double priceMax) {
+	public List<InstrumentDto> read(Integer familyId, Integer typeId, Integer propertyId, Integer brandId, Integer pageSize, Integer pageNumber, Double priceMin, Double priceMax, InstrumentSort sort) {
 
-		return instrumentDao.read(familyId,typeId, propertyId, brandId, pageSize, pageNumber, priceMin, priceMax).stream().map(instrument -> convertJpeToDto(instrument))
+		return instrumentDao.read(familyId,typeId, propertyId, brandId, pageSize, pageNumber, priceMin, priceMax, sort).stream().map(instrument -> convertJpeToDto(instrument))
 				.collect(Collectors.toList());
 	}
 

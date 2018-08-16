@@ -23,7 +23,7 @@ public class InstrumentDaoImpl extends GenericDaoImpl<Instrument, Integer> imple
 	}
 	
 	public List<Instrument> read(Integer familyId, Integer typeId, Integer propertyId, Integer brandId,
-			Integer pageSize, Integer pageNumber, Double priceMin, Double priceMax) {
+			Integer pageSize, Integer pageNumber, Double priceMin, Double priceMax, InstrumentSort sort) {
 
 		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		CriteriaQuery<Instrument> criteria = builder.createQuery(Instrument.class);
@@ -49,6 +49,18 @@ public class InstrumentDaoImpl extends GenericDaoImpl<Instrument, Integer> imple
 		}
 		if (priceMax != null) {
 			predicate = builder.and(predicate, builder.lessThan(root.get("price"), priceMax));
+		}
+		if(sort!=null) {
+			switch (sort){
+			case nameASC: criteria.orderBy(builder.asc(root.get("name")));
+			break;
+			case nameDESC: criteria.orderBy(builder.desc(root.get("name")));
+			break;
+			case priceASC: criteria.orderBy(builder.asc(root.get("price")));
+			break;
+			case priceDESC: criteria.orderBy(builder.desc(root.get("price")));
+			break;
+			}
 		}
 		criteria.select(root).where(predicate);
 		Session s = sessionFactory.getCurrentSession();
