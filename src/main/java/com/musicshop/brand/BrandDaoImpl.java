@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -24,7 +25,7 @@ public class BrandDaoImpl extends GenericDaoImpl<Brand, Integer> implements Bran
 
 	@Override
 	public List<Brand> read(Integer familyId, Integer typeId, Integer propertyId, Double priceMin, Double priceMax,
-			boolean havingInstruments) {
+			boolean havingInstruments, BrandSort sort) {
 
 		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		CriteriaQuery<Brand> cq = builder.createQuery(Brand.class);
@@ -33,32 +34,49 @@ public class BrandDaoImpl extends GenericDaoImpl<Brand, Integer> implements Bran
 		Subquery<Long> subCount = cq.subquery(Long.class);
 		Root<Instrument> instrument = subCount.from(Instrument.class);
 
-		Predicate predicate = builder.conjunction();
+		Predicate subPredicate = builder.conjunction();
 		if (propertyId != null) {
 			Join<Instrument, Property> withProperty = instrument.join("properties");
-			predicate = builder.and(predicate, builder.equal(withProperty.get("id"), propertyId));
+			subPredicate = builder.and(subPredicate, builder.equal(withProperty.get("id"), propertyId));
 		} else if (typeId != null) {
 			Join<Instrument, Type> withType = instrument.join("type");
-			predicate = builder.and(predicate, builder.equal(withType.get("id"), typeId));
+			subPredicate = builder.and(subPredicate, builder.equal(withType.get("id"), typeId));
 		} else if (familyId != null) {
 			Join<Instrument, Type> withType = instrument.join("type");
 			Join<Type, Family> withFamily = withType.join("family");
-			predicate = builder.and(predicate, builder.equal(withFamily.get("id"), familyId));
+			subPredicate = builder.and(subPredicate, builder.equal(withFamily.get("id"), familyId));
 		}
 		if (priceMin != null) {
-			predicate = builder.and(predicate, builder.greaterThanOrEqualTo(instrument.get("price"), priceMin));
+			subPredicate = builder.and(subPredicate, builder.greaterThanOrEqualTo(instrument.get("price"), priceMin));
 		}
 		if (priceMax != null) {
-			predicate = builder.and(predicate, builder.lessThan(instrument.get("price"), priceMax));
+			subPredicate = builder.and(subPredicate, builder.lessThan(instrument.get("price"), priceMax));
 		}
-		predicate = builder.and(predicate, builder.equal(instrument.get("brand").get("id"), root.get("id")));
+		subPredicate = builder.and(subPredicate, builder.equal(instrument.get("brand").get("id"), root.get("id")));
 
-		subCount.select(builder.count(instrument)).where(predicate);
+		subCount.select(builder.count(instrument)).where(subPredicate);
+
+		Expression<Integer> exp = builder.toInteger(subCount.getSelection());
+		if (sort != null) {
+			switch (sort) {
+			case nameASC:
+				cq.orderBy(builder.asc(root.get("name")));
+				break;
+			case nameDESC:
+				cq.orderBy(builder.desc(root.get("name")));
+				break;
+			case instrumentCountASC:
+				cq.orderBy(builder.asc(builder.literal(4)));
+				break;
+			case instrumentCountDESC:
+				cq.orderBy(builder.desc(builder.literal(4)));
+				break;
+			}
+		}
 
 		cq.select(builder.construct(Brand.class, root.get("id"), root.get("name"), root.get("image"),
-				subCount.getSelection()))
-				.where(havingInstruments ? builder.greaterThan(builder.toInteger(subCount.getSelection()), 0)
-						: builder.conjunction());
+				subCount.getSelection())).where(havingInstruments ? builder.greaterThan(exp, 0) : builder.conjunction())
+				.groupBy(root.get("id"), root.get("name"), root.get("image"));
 		return sessionFactory.getCurrentSession().createQuery(cq).getResultList();
 
 //		Query q = sessionFactory.getCurrentSession()

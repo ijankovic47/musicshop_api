@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.musicshop.brand.Brand;
 import com.musicshop.brand.BrandService;
+import com.musicshop.brand.BrandSort;
 import com.musicshop.exceptions.NoSuchEntityException;
 
 @RestController
@@ -49,9 +50,10 @@ public class BrandController {
 			@RequestParam(name = "propertyId", required = false) Integer propertyId,
 			@RequestParam(name = "priceMin", required = false) Double priceMin,
 			@RequestParam(name = "priceMax", required = false) Double priceMax,
-			@RequestParam(name = "havingInstruments", defaultValue="false") boolean havingInstruments) {
+			@RequestParam(name = "havingInstruments", defaultValue="false") boolean havingInstruments,
+			@RequestParam(name = "sort", required=false) BrandSort brandSort) {
 
-		return ResponseEntity.ok(brandService.read(familyId, typeId, propertyId, priceMin, priceMax, havingInstruments));
+		return ResponseEntity.ok(brandService.read(familyId, typeId, propertyId, priceMin, priceMax, havingInstruments, brandSort));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
