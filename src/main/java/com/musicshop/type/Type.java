@@ -2,6 +2,7 @@ package com.musicshop.type;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityResult;
 import javax.persistence.FetchType;
@@ -41,7 +42,7 @@ public class Type {
 	private Family family;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="type")
 	private List<Instrument> instruments;
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="type")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="type", cascade=CascadeType.REMOVE)
 	private List<Property> properties;
 	@Transient
 	private Long instrumentCount;

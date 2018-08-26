@@ -46,6 +46,19 @@ public class TypeServiceImpl implements TypeService {
 
 		return typeDao.read(familyId, brandId, priceMin, priceMax, havingInstruments).stream().map(type->convertJpeToDto(type)).collect(Collectors.toList());
 	}
+	@Override
+	public void edit(Integer id, TypeDto type) {
+		
+		Type t=typeDao.readById(id);
+		t.setFamily(familyDao.readById(type.getFamilyId()));
+		t.setImage(type.getImage());
+		t.setName(type.getName());
+	}
+	
+	@Override
+	public void delete(Integer id) {
+		typeDao.delete(id);
+	}
 
 	private TypeDto convertJpeToDto(Type type) {
 		
@@ -68,5 +81,4 @@ public class TypeServiceImpl implements TypeService {
 		
 		return t;
 	}
-
 }

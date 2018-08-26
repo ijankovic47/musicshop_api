@@ -56,4 +56,24 @@ public class PropertyServiceImpl implements PropertyService{
 		
 		return jpe;
 	}
+
+	@Override
+	public void edit(Integer id, PropertyDto property) {
+	
+		Property p=propertyDao.readById(id);
+		p.setName(property.getName());
+		p.setType(typeDao.readById(property.getTypeId()));
+		
+	}
+
+	@Override
+	public void delete(Integer id) {
+		propertyDao.delete(id);
+	}
+
+	@Override
+	public Optional<PropertyDto> readById(Integer id) {
+		
+		return Optional.ofNullable(convertJpeToDto(propertyDao.readById(id)));
+	}
 }

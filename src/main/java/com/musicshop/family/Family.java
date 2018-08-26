@@ -1,17 +1,12 @@
 package com.musicshop.family;
 
-import java.util.List;
-
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
-
-import com.musicshop.type.Type;
+import org.hibernate.annotations.Formula;
 
 @Entity
 public class Family {
@@ -21,10 +16,10 @@ public class Family {
 	@SequenceGenerator(name="FAMILY_SEQ", sequenceName="FAMILY_SEQ", allocationSize=1)
 	private Integer id;
 	private String name;
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="family" )
-	private List<Type> types;
 	@Transient
 	private Long instrumentCount;
+	@Formula("(select count(t.id) from Type t where t.family_id=id)")
+	private Long typeCount;
 	
 	public Family() {
 	}
@@ -46,16 +41,16 @@ public class Family {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<Type> getTypes() {
-		return types;
-	}
-	public void setTypes(List<Type> types) {
-		this.types = types;
-	}
 	public Long getInstrumentCount() {
 		return instrumentCount;
 	}
 	public void setInstrumentCount(Long instrumentCount) {
 		this.instrumentCount = instrumentCount;
+	}
+	public Long getTypeCount() {
+		return typeCount;
+	}
+	public void setTypeCount(Long typeCount) {
+		this.typeCount = typeCount;
 	}
 }

@@ -34,4 +34,18 @@ public class BrandServiceImpl implements BrandService {
 	public Optional<Brand> readById(Integer id) {
 		return Optional.ofNullable(brandDao.readById(id));
 	}
+
+	@Override
+	public void edit(Integer id, Brand brand) {
+		
+		Brand b=brandDao.readById(id);
+		b.setImage(brand.getImage());
+		b.setName(brand.getName());
+	}
+
+	@Override
+	public void delete(Integer id) {
+		
+		brandDao.delete(id);
+	}
 }

@@ -9,6 +9,7 @@ public class InstrumentDto {
 	private String description;
 	private Integer brandId;
 	private Integer typeId;
+	private Long familyId;
 	private List<String> images;
 	private String video;
 	private double price;
@@ -68,4 +69,11 @@ public class InstrumentDto {
 	public void setProperties(List<Integer> properties) {
 		this.properties = properties;
 	}
+	public Long getFamilyId() {
+		return familyId;
+	}
+	public void setFamilyId(Long familyId) {
+		this.familyId = familyId;
+	}
+	
 }

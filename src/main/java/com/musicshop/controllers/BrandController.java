@@ -3,7 +3,6 @@ package com.musicshop.controllers;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.musicshop.brand.Brand;
 import com.musicshop.brand.BrandService;
 import com.musicshop.brand.BrandSort;
@@ -64,5 +62,19 @@ public class BrandController {
 			return ResponseEntity.ok(brand.get());
 		}
 		throw new NoSuchEntityException("No brand found for id = " + id);
+	}
+	
+	@RequestMapping(value = "/{brandId}", method = RequestMethod.PATCH)
+	public ResponseEntity<?> edit(@RequestBody Brand brand, @PathVariable("brandId") Integer id) {
+
+		brandService.edit(id, brand);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+
+	@RequestMapping(value = "/{brandId}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> delete(@PathVariable("brandId") Integer id) {
+
+		brandService.delete(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 }
