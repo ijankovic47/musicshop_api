@@ -10,4 +10,6 @@ public interface InstrumentService {
 	Optional<InstrumentDto> readById(Integer id);
 	List<Double> prices(Integer familyId, Integer typeId, Integer propertyId, Integer brandId, Double priceMin, Double priceMax);
 	List<InstrumentDto> readByIds(List<Integer> ids);
+	void edit(Integer id, InstrumentDto instrument);
+	void delete(Integer id);
 }

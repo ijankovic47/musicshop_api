@@ -8,4 +8,6 @@ public interface TypeService {
 	Integer create(TypeDto type);
 	Optional<TypeDto> readById(Integer id);
 	List<TypeDto> read(Integer familyId, Integer brandId, Double priceMin, Double priceMax, boolean havingInstruments);
+	void edit(Integer id, TypeDto type);
+	void delete(Integer id);
 }

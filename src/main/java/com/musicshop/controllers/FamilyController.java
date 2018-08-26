@@ -59,4 +59,18 @@ public class FamilyController {
 		}
 		throw new NoSuchEntityException("No family found for id = " + id);
 	}
+
+	@RequestMapping(value = "/{familyId}", method = RequestMethod.PATCH)
+	public ResponseEntity<?> edit(@RequestBody Family family, @PathVariable("familyId") Integer id) {
+
+		familyService.edit(id, family);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+
+	@RequestMapping(value = "/{familyId}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> delete(@PathVariable("familyId") Integer id) {
+
+		familyService.delete(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
 }

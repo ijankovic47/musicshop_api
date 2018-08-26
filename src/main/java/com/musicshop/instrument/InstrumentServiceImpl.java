@@ -1,5 +1,7 @@
 package com.musicshop.instrument;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,9 +77,11 @@ public class InstrumentServiceImpl implements InstrumentService {
 		dto.setPrice(jpe.getPrice());
 		dto.setVideo(jpe.getVideo());
 		dto.setDescription(jpe.getDescription());
-		dto.setImages(jpe.getImages());
+		dto.setImages(new ArrayList<>(jpe.getImages()));
 		dto.setBrandId(jpe.getBrand().getId());
 		dto.setTypeId(jpe.getType().getId());
+		dto.setFamilyId(jpe.getFamilyId());
+		dto.setProperties(jpe.getProperties().stream().map(i->i.getId()).collect(Collectors.toList()));
 
 		return dto;
 	}
@@ -89,7 +93,7 @@ public class InstrumentServiceImpl implements InstrumentService {
 		i.setName(dto.getName());
 		i.setPrice(dto.getPrice());
 		i.setDescription(dto.getDescription());
-		i.setImages(dto.getImages());
+		i.setImages(new HashSet<>(dto.getImages()));
 		i.setVideo(dto.getVideo());
 
 		return i;
@@ -99,5 +103,23 @@ public class InstrumentServiceImpl implements InstrumentService {
 	public List<InstrumentDto> readByIds(List<Integer> ids) {
 		return instrumentDao.readByIds(ids).stream().map(instrument -> convertJpeToDto(instrument))
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public void edit(Integer id, InstrumentDto instrument) {
+		Instrument i=instrumentDao.readById(id);
+		i.setName(instrument.getName());
+		i.setPrice(instrument.getPrice());
+		i.setVideo(instrument.getVideo());
+		i.setDescription(instrument.getDescription());
+		i.setImages(new HashSet<>(instrument.getImages()));
+		i.setProperties(propertyDao.readByIds(instrument.getProperties()));
+		i.setBrand(brandDao.readById(instrument.getBrandId()));
+		i.setType(typeDao.readById(instrument.getTypeId()));
+	}
+
+	@Override
+	public void delete(Integer id) {
+		instrumentDao.delete(id);
 	}
 }

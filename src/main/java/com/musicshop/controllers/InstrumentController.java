@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.musicshop.exceptions.NoSuchEntityException;
 import com.musicshop.instrument.InstrumentDto;
 import com.musicshop.instrument.InstrumentService;
@@ -59,7 +58,6 @@ public class InstrumentController {
 		if (ids!=null&&!ids.isEmpty()) {
 			return ResponseEntity.ok(instrumentService.readByIds(ids));
 		}
-		System.out.println(sort!=null?sort.name():null);
 		return ResponseEntity.ok(instrumentService.read(familyId, typeId, propertyId, brandId, pageSize, pageNumber,
 				priceMin, priceMax, sort));
 	}
@@ -83,5 +81,18 @@ public class InstrumentController {
 			return ResponseEntity.ok(instrument.get());
 		}
 		throw new NoSuchEntityException("No instrument found for id = " + id);
+	}
+	@RequestMapping(value = "/{instrumentId}", method = RequestMethod.PATCH)
+	public ResponseEntity<?> edit(@RequestBody InstrumentDto instrument, @PathVariable("instrumentId") Integer id) {
+
+		instrumentService.edit(id, instrument);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+
+	@RequestMapping(value = "/{instrumentId}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> delete(@PathVariable("instrumentId") Integer id) {
+
+		instrumentService.delete(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 }

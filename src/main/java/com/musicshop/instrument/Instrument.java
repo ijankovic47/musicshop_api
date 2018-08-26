@@ -1,6 +1,7 @@
 package com.musicshop.instrument;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Formula;
+
 import com.musicshop.brand.Brand;
 import com.musicshop.property.Property;
 import com.musicshop.type.Type;
@@ -22,8 +25,8 @@ import com.musicshop.type.Type;
 public class Instrument {
 
 	@Id
-	@GeneratedValue (strategy=GenerationType.SEQUENCE, generator="INSTRUMENT_SEQ")
-	@SequenceGenerator(name="INSTRUMENT_SEQ", sequenceName="INSTRUMENT_SEQ", allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INSTRUMENT_SEQ")
+	@SequenceGenerator(name = "INSTRUMENT_SEQ", sequenceName = "INSTRUMENT_SEQ", allocationSize = 1)
 	private Integer id;
 	private String name;
 	private String description;
@@ -31,11 +34,15 @@ public class Instrument {
 	private Brand brand;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Type type;
+	@Formula("(select f.id from Family f join Type t on t.family_id=f.id join Instrument i on i.type_id=t.id where i.id=id)")
+	private Long familyId;
 	@ElementCollection(fetch = FetchType.EAGER)
-	private List<String> images;
+	private Set<String> images;
 	private String video;
 	private double price;
-	@ManyToMany(fetch = FetchType.LAZY)
+//	@Formula("(select p.id from property p join instrument_property ip on ip.property_id=p.id join instrument i on i.id=ip.instrument_id where i.id=id;)")
+//	private List<Integer> props;
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Instrument_Property", joinColumns = {
 			@JoinColumn(name = "INSTRUMENT_ID") }, inverseJoinColumns = { @JoinColumn(name = "PROPERTY_ID") })
 	private List<Property> properties;
@@ -80,14 +87,6 @@ public class Instrument {
 		this.type = type;
 	}
 
-	public List<String> getImages() {
-		return images;
-	}
-
-	public void setImages(List<String> images) {
-		this.images = images;
-	}
-
 	public String getVideo() {
 		return video;
 	}
@@ -111,5 +110,29 @@ public class Instrument {
 	public void setProperties(List<Property> properties) {
 		this.properties = properties;
 	}
+
+	public Long getFamilyId() {
+		return familyId;
+	}
+
+	public void setFamilyId(Long familyId) {
+		this.familyId = familyId;
+	}
+
+	public Set<String> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<String> images) {
+		this.images = images;
+	}
+
+//	public List<Integer> getProps() {
+//		return props;
+//	}
+//
+//	public void setProps(List<Integer> props) {
+//		this.props = props;
+//	}
 
 }

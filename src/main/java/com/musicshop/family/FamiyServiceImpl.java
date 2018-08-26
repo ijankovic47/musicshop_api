@@ -36,4 +36,17 @@ public class FamiyServiceImpl implements FamilyService {
 		
 		return familyDao.create(family);
 	}
+
+	@Override
+	public void edit(Integer id, Family family) {
+		
+		Family jpe=familyDao.readById(id);
+		jpe.setName(family.getName());
+		
+	}
+
+	@Override
+	public void delete(Integer id) {
+		familyDao.delete(id);
+	}
 }

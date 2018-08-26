@@ -60,4 +60,17 @@ public class TypeController {
 		}
 		throw new NoSuchEntityException("No type found for id = " + id);
 	}
+	@RequestMapping(value = "/{typeId}", method = RequestMethod.PATCH)
+	public ResponseEntity<?> edit(@RequestBody TypeDto type, @PathVariable("typeId") Integer id) {
+
+		typeService.edit(id, type);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+
+	@RequestMapping(value = "/{typeId}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> delete(@PathVariable("typeId") Integer id) {
+
+		typeService.delete(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
 }

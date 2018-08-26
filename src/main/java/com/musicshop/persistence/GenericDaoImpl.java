@@ -42,4 +42,9 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
 		criteria.select(root);
 		return sessionFactory.getCurrentSession().createQuery(criteria).getResultList();
 	}
+	
+	@Override
+	public void delete(PK id) {
+		sessionFactory.getCurrentSession().delete(readById(id));
+	}
 }
