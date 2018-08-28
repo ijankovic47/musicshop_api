@@ -32,6 +32,10 @@ public class FamiyServiceImpl implements FamilyService {
 	}
 
 	@Override
+	public Optional<Family> readFamilyByTypeId(Integer typeId) {
+		return Optional.ofNullable(familyDao.readByTypeId(typeId));
+	}
+	@Override
 	public Integer create(Family family) {
 		
 		return familyDao.create(family);

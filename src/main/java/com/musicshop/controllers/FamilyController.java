@@ -45,8 +45,16 @@ public class FamilyController {
 	public ResponseEntity<?> read(@RequestParam(name = "brandId", required = false) Integer brandId,
 			@RequestParam(name = "priceMin", required = false) Double priceMin,
 			@RequestParam(name = "priceMax", required = false) Double priceMax,
-			@RequestParam(name = "havingInstruments", defaultValue = "false") boolean havingInstruments) {
+			@RequestParam(name = "havingInstruments", defaultValue = "false") boolean havingInstruments,
+			@RequestParam(name = "typeId", required = false) Integer typeId) throws NoSuchEntityException {
 
+		if (typeId != null) {
+			Optional<Family> family = familyService.readFamilyByTypeId(typeId);
+			if (family.isPresent()) {
+				return ResponseEntity.ok(family.get());
+			}
+			throw new NoSuchEntityException("No family found for type id = " + typeId);
+		}
 		return ResponseEntity.ok(familyService.read(brandId, priceMin, priceMax, havingInstruments));
 	}
 

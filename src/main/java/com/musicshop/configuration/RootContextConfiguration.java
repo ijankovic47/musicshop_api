@@ -31,7 +31,7 @@ public class RootContextConfiguration implements WebMvcConfigurer{
 	@Bean(name = "dataSource")
 	public DataSource getOracleDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName(environment.getProperty("oracle.jdbc.OracleDriver"));
+		dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
 		String dbUsername = environment.getProperty("database.username");
 		String dbPassword = environment.getProperty("database.password");
 		String dbHost = environment.getProperty("database.host");

@@ -42,12 +42,20 @@ public class TypeController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> read(@RequestParam("familyId") Integer familyId,
+	public ResponseEntity<?> read(@RequestParam(name = "familyId", required= false) Integer familyId,
 			@RequestParam(name = "brandId", required = false) Integer brandId,
 			@RequestParam(name = "priceMin", required = false) Double priceMin,
 			@RequestParam(name = "priceMax", required = false) Double priceMax,
-			@RequestParam(name = "havingInstruments", defaultValue = "false") boolean havingInstruments) {
+			@RequestParam(name = "havingInstruments", defaultValue = "false") boolean havingInstruments,
+			@RequestParam(name = "propertyId", required = false) Integer propertyId) throws NoSuchEntityException {
 
+		if(propertyId!=null) {
+			Optional<TypeDto> type = typeService.readByPropertyId(propertyId);
+			if (type.isPresent()) {
+				return ResponseEntity.ok(type.get());
+			}
+			throw new NoSuchEntityException("No type found for property id = " + propertyId);
+		}
 		return ResponseEntity.ok(typeService.read(familyId, brandId, priceMin, priceMax, havingInstruments));
 	}
 

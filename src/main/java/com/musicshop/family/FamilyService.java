@@ -10,4 +10,5 @@ public interface FamilyService {
 	Integer create(Family family);
 	void edit(Integer id, Family family);
 	void delete(Integer id);
+	Optional<Family> readFamilyByTypeId(Integer typeId);
 }

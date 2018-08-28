@@ -10,6 +10,7 @@ import javax.persistence.criteria.Subquery;
 import org.springframework.stereotype.Repository;
 import com.musicshop.instrument.Instrument;
 import com.musicshop.persistence.GenericDaoImpl;
+import com.musicshop.type.Type;
 
 @Repository
 public class FamilyDaoImpl extends GenericDaoImpl<Family, Integer> implements FamilyDao{
@@ -62,5 +63,25 @@ public class FamilyDaoImpl extends GenericDaoImpl<Family, Integer> implements Fa
 //		
 //		return families;
 		
+	}
+	@Override
+	public Family readByTypeId(Integer typeId) {
+
+		CriteriaBuilder builder=sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<Family> cq=builder.createQuery(Family.class);
+		
+		Root<Family> family=cq.from(Family.class);
+		
+		Subquery<Long> familyId=cq.subquery(Long.class);
+		Root<Type> type=familyId.from(Type.class);
+		Predicate subPredicate =builder.conjunction();
+		subPredicate=builder.and(subPredicate, builder.equal(type.get("id"), typeId));
+		familyId.select(type.get("family").get("id")).where(subPredicate);
+		Predicate predicate=builder.conjunction();
+		predicate=builder.and(predicate, builder.equal(family.get("id"), familyId.getSelection()));
+		
+		cq.select(family).where(predicate);
+		
+		return sessionFactory.getCurrentSession().createQuery(cq).getSingleResult();
 	}
 }

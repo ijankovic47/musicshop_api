@@ -9,6 +9,7 @@ import javax.persistence.criteria.Subquery;
 import org.springframework.stereotype.Repository;
 import com.musicshop.instrument.Instrument;
 import com.musicshop.persistence.GenericDaoImpl;
+import com.musicshop.property.Property;
 
 @Repository
 public class TypeDaoImpl extends GenericDaoImpl<Type, Integer> implements TypeDao {
@@ -68,6 +69,26 @@ public class TypeDaoImpl extends GenericDaoImpl<Type, Integer> implements TypeDa
 //		List<Type> types=q.list();
 //		return types;
 		
+	}
+
+	@Override
+	public Type readByPropertyId(Integer propertyId) {
+		CriteriaBuilder builder=sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<Type> cq=builder.createQuery(Type.class);
+		
+		Root<Type> type=cq.from(Type.class);
+		
+		Subquery<Long> typeId=cq.subquery(Long.class);
+		Root<Property> property=typeId.from(Property.class);
+		Predicate subPredicate =builder.conjunction();
+		subPredicate=builder.and(subPredicate, builder.equal(property.get("id"), propertyId));
+		typeId.select(property.get("type").get("id")).where(subPredicate);
+		Predicate predicate=builder.conjunction();
+		predicate=builder.and(predicate, builder.equal(type.get("id"), typeId.getSelection()));
+		
+		cq.select(type).where(predicate);
+		
+		return sessionFactory.getCurrentSession().createQuery(cq).getSingleResult();
 	}
 
 }

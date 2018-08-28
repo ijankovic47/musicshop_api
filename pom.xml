@@ -62,7 +62,7 @@
 
 
 	<build>
-		<finalName>musicshop</finalName>
+		<finalName>musicshop.api</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

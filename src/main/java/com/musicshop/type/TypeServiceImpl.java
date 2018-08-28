@@ -81,4 +81,10 @@ public class TypeServiceImpl implements TypeService {
 		
 		return t;
 	}
+
+	@Override
+	public Optional<TypeDto> readByPropertyId(Integer propertyId) {
+		
+		return Optional.ofNullable(convertJpeToDto(typeDao.readByPropertyId(propertyId)));
+	}
 }

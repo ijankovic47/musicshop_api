@@ -10,4 +10,5 @@ public interface TypeService {
 	List<TypeDto> read(Integer familyId, Integer brandId, Double priceMin, Double priceMax, boolean havingInstruments);
 	void edit(Integer id, TypeDto type);
 	void delete(Integer id);
+	Optional<TypeDto> readByPropertyId(Integer propertyid);
 }
