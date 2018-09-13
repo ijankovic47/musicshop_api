@@ -54,6 +54,7 @@ public class RootContextConfiguration implements WebMvcConfigurer{
 		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.OracleDialect");
 		hibernateProperties.setProperty("hibernate.show_sql", "true");
 		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
+		hibernateProperties.setProperty("hibernate.temp.use_jdbc_metadata_defaults", "false");
 		return hibernateProperties;
 	}
 
