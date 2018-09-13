@@ -1,7 +1,6 @@
 package com.musicshop.controllers;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class FamilyController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> create(@RequestBody Family family) throws URISyntaxException {
+	public ResponseEntity<?> create(@RequestBody Family family) {
 
 		Integer id = familyService.create(family);
 		URI location = ServletUriComponentsBuilder.fromCurrentServletMapping().path("/family/{id}").build().expand(id)
